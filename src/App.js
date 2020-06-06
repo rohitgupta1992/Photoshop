@@ -15,14 +15,16 @@ export default class App extends Component {
     start:0,
     isChange:false,
     isLoding :true,
-
-    loading:''
+colorchange:false,
+    loading:'' ,
+    allimgd:''
   };
   showModal = (img) => {
     this.setState({
       url: `${img.download_url}?grayscale`,
       url2:img.download_url,
-      isShow: true,
+      isShow: true, 
+      allimgd:img
     });
   };
   closeModal = () => {
@@ -30,7 +32,18 @@ export default class App extends Component {
       isShow: false,
     });
   };
-  
+  closeModal1 = (dataimg , col) => {
+debugger;
+const  imges= this.state.imges.map(item=>{
+  if(item.id ===dataimg.id ){
+item.color = col
+  }
+  return item;
+})
+  this.setState({
+    imges:imges
+  })  
+  };
   componentDidMount() {
     const {count , start}=this.state;
     axios.get(`https://picsum.photos/v2/list?page=${start}&limit=${count}`).then(res=>this.setState({imges:res.data ,
@@ -63,6 +76,8 @@ export default class App extends Component {
             close={this.closeModal}
             url1={this.state.url}
             url2={this.state.url2}
+            closeModal={this.closeModal1}
+            allimgd ={this.state.allimgd}
           />
         )}
           <InfiniteScroll 
@@ -76,7 +91,7 @@ export default class App extends Component {
             {this.state.imges.map((img, i) => (
               <div className="col-lg-2 col-6  five" key={img.id}>
                 <img
-                  src={!this.state.isChange? (img.download_url) : (img.download_url +"?grayscale")}
+                  src={img.color?( img.color==='color'?(img.download_url) : (img.download_url +"?grayscale")) : !this.state.isChange?(img.download_url) :(img.download_url +"?grayscale")}
                   onClick={() => this.showModal(img)}
                   className="img-siz"
                 />

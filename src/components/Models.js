@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Modal , Button} from 'react-bootstrap';
 export default class Models extends Component {
   state={
+    
     url:this.props.url1 ,
     url2:this.props.url2 ,
     sel:[1,2,3,4,5,6,7,8,9,10] ,
@@ -21,11 +22,13 @@ export default class Models extends Component {
     })
   }
   imgSelectColBlur=(cb)=>{
-  
+  debugger;
     if(cb.target.value==="color"){
+      this.props.closeModal(this.props.allimgd , cb.target.value);
       this.setState({
         url:`${this.props.url2}`
       })}else{
+        this.props.closeModal( this.props.allimgd , cb.target.value);
         this.setState({
           url:`${this.props.url2}?${cb.target.value}`
         })
